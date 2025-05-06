@@ -14,45 +14,45 @@
     "text": "About this site\n\n1 + 1\n\n[1] 2"
   },
   {
-    "objectID": "FCE_dashv1.html",
-    "href": "FCE_dashv1.html",
+    "objectID": "FCE_dash.html",
+    "href": "FCE_dash.html",
     "title": "Florida Coastal Everglades R Workshop",
     "section": "",
     "text": "Note: The information below along with associated graphics was generated using provisional data and it is subject to change.\n\nDBHYDRO Insights\nEDEN\nFlorida Coastal Everglades\n\n\n\n\n\nAll graphs are interactive, with information on the station on a particular day\nZoom in on the y-axis: Point and drag up or down. To exit, double-click on the plot.\nZoom in on the x-axis: Point and drag left or right. To exit, double-click on the plot.\n\n\n\n\n\nLake Okeechobee Watershed Dashboard\nWater Quality Engagement Project\n\n\n\n\n\n\n\n\nlibrary(terra)\n\nterra 1.7.83\n\n\n\nAttaching package: 'terra'\n\n\nThe following object is masked from 'package:tidyr':\n\n    extract\n\nlibrary(mapview)\nlibrary(leafpop)\n\nsites &lt;- read_rds(\"sites.rds\")\nsites_sf &lt;- st_as_sf(sites, coords = c(\"X_NAD83\", \"Y_NAD83\"), crs = 26917)\n\nmapview(sites_sf,\n        zcol = \"landscape\",\n        col.regions = c(\"S\" = \"blue\", \"WP\" = \"green\"),\n        map.types = c(\"OpenStreetMap.DE\"),\n        label = sites_sf$PLOT, \n        popup = popupTable(sites_sf,\n                           zcol = c(\"landscape\", \"PLOT\")),\n        burst = FALSE,\n        legend = TRUE)\n\n\n\n\n\n\n\n\n\n\n\n\nlibrary(plotly)\n\nhydro_monthly &lt;- read_rds(\"hydro_month.rds\")\n\nquad_model &lt;- lm(wse_mean ~ poly(TimeIndex, 2, raw = TRUE), data = hydro_monthly)\n\nr2_value &lt;- summary(quad_model)$r.squared\n\ncoefs &lt;- coef(quad_model)\neq &lt;- sprintf(\"y = %.4f x² + %.4f x + %.4f\", coefs[3], coefs[2], coefs[1])\n\ny_min &lt;- min(hydro_monthly$wse_mean, na.rm = TRUE) - 5  \nstart_date &lt;- as.Date(\"2005-01-01\")\nend_date &lt;- as.Date(\"2024-04-30\")\n\n\n# ggolot -&gt; plotly\np &lt;- ggplot(hydro_monthly, aes(x = YearMonth, y = wse_mean)) +\n  geom_point(size = 2.5) +   \n  geom_line() + \n  geom_errorbar(aes(ymin = wse_mean - wse_sd, ymax = wse_mean + wse_sd), width = 10) +\n  geom_smooth(method = \"lm\", formula = y ~ poly(x, 2, raw = TRUE), se = FALSE, linetype = \"dashed\") +\n  annotate(\"text\", x = as.Date(\"2015-06-01\"), y = y_min,\n           label = sprintf(\"r² = %.2f\\n%s\", r2_value, eq),\n           size = 4, hjust = 0) +\n  labs(x = \"Year\", y = \"Water Surface Elevation (cm)\", title = \"Mean Monthly WSE\") +\n  scale_x_date(date_breaks = \"1 year\", date_labels = \"%Y\") +\n  theme_classic() +\n  theme(\n    panel.border = element_rect(colour = \"black\", fill = NA, size = 0.5),\n    axis.text.x = element_text(angle = 45, hjust = 1)\n  )\n\nWarning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.\nℹ Please use the `linewidth` argument instead.\n\nggplotly(p)\n\n\n\n\n\n\n\n\n\n\n\n\nlibrary(plotly)\n\nhydro_monthly &lt;- read_rds(\"hydro_month.rds\")\n\nquad_model &lt;- lm(wse_mean ~ poly(TimeIndex, 2, raw = TRUE), data = hydro_monthly)\n\nr2_value &lt;- summary(quad_model)$r.squared\n\ncoefs &lt;- coef(quad_model)\neq &lt;- sprintf(\"y = %.4f x² + %.4f x + %.4f\", coefs[3], coefs[2], coefs[1])\n\ny_min &lt;- min(hydro_monthly$wse_mean, na.rm = TRUE) - 5  \nstart_date &lt;- as.Date(\"2005-01-01\")\nend_date &lt;- as.Date(\"2024-04-30\")\n\nhydro_select &lt;- hydro_monthly %&gt;%\n  dplyr::select(YearMonth, wse_mean)\n\ndygraphs::dygraph(hydro_select) %&gt;%\n  dySeries(\"wse_mean\",\n           label = \"water surface elevation\",\n           stepPlot = TRUE,\n           color = \"blue\") %&gt;%\n  dyAxis(\"y\",\n         label = \"wse (cm)\",\n         axisLabelColor = \"black\") %&gt;%\n  dyLegend(show = \"always\",\n           hideOnMouseOut = FALSE,\n           width = 400) %&gt;%\n  dyRangeSelector(height = 10)"
   },
   {
-    "objectID": "FCE_dashv1.html#row",
-    "href": "FCE_dashv1.html#row",
+    "objectID": "FCE_dash.html#row",
+    "href": "FCE_dash.html#row",
     "title": "Florida Coastal Everglades R Workshop",
     "section": "",
     "text": "Note: The information below along with associated graphics was generated using provisional data and it is subject to change.\n\nDBHYDRO Insights\nEDEN\nFlorida Coastal Everglades\n\n\n\n\n\nAll graphs are interactive, with information on the station on a particular day\nZoom in on the y-axis: Point and drag up or down. To exit, double-click on the plot.\nZoom in on the x-axis: Point and drag left or right. To exit, double-click on the plot.\n\n\n\n\n\nLake Okeechobee Watershed Dashboard\nWater Quality Engagement Project"
   },
   {
-    "objectID": "FCE_dashv1.html#row-1",
-    "href": "FCE_dashv1.html#row-1",
+    "objectID": "FCE_dash.html#row-1",
+    "href": "FCE_dash.html#row-1",
     "title": "Florida Coastal Everglades R Workshop",
     "section": "",
     "text": "library(terra)\n\nterra 1.7.83\n\n\n\nAttaching package: 'terra'\n\n\nThe following object is masked from 'package:tidyr':\n\n    extract\n\nlibrary(mapview)\nlibrary(leafpop)\n\nsites &lt;- read_rds(\"sites.rds\")\nsites_sf &lt;- st_as_sf(sites, coords = c(\"X_NAD83\", \"Y_NAD83\"), crs = 26917)\n\nmapview(sites_sf,\n        zcol = \"landscape\",\n        col.regions = c(\"S\" = \"blue\", \"WP\" = \"green\"),\n        map.types = c(\"OpenStreetMap.DE\"),\n        label = sites_sf$PLOT, \n        popup = popupTable(sites_sf,\n                           zcol = c(\"landscape\", \"PLOT\")),\n        burst = FALSE,\n        legend = TRUE)"
   },
   {
-    "objectID": "FCE_dashv1.html#row-2",
-    "href": "FCE_dashv1.html#row-2",
+    "objectID": "FCE_dash.html#row-2",
+    "href": "FCE_dash.html#row-2",
     "title": "Florida Coastal Everglades R Workshop",
     "section": "",
     "text": "library(plotly)\n\nhydro_monthly &lt;- read_rds(\"hydro_month.rds\")\n\nquad_model &lt;- lm(wse_mean ~ poly(TimeIndex, 2, raw = TRUE), data = hydro_monthly)\n\nr2_value &lt;- summary(quad_model)$r.squared\n\ncoefs &lt;- coef(quad_model)\neq &lt;- sprintf(\"y = %.4f x² + %.4f x + %.4f\", coefs[3], coefs[2], coefs[1])\n\ny_min &lt;- min(hydro_monthly$wse_mean, na.rm = TRUE) - 5  \nstart_date &lt;- as.Date(\"2005-01-01\")\nend_date &lt;- as.Date(\"2024-04-30\")\n\n\n# ggolot -&gt; plotly\np &lt;- ggplot(hydro_monthly, aes(x = YearMonth, y = wse_mean)) +\n  geom_point(size = 2.5) +   \n  geom_line() + \n  geom_errorbar(aes(ymin = wse_mean - wse_sd, ymax = wse_mean + wse_sd), width = 10) +\n  geom_smooth(method = \"lm\", formula = y ~ poly(x, 2, raw = TRUE), se = FALSE, linetype = \"dashed\") +\n  annotate(\"text\", x = as.Date(\"2015-06-01\"), y = y_min,\n           label = sprintf(\"r² = %.2f\\n%s\", r2_value, eq),\n           size = 4, hjust = 0) +\n  labs(x = \"Year\", y = \"Water Surface Elevation (cm)\", title = \"Mean Monthly WSE\") +\n  scale_x_date(date_breaks = \"1 year\", date_labels = \"%Y\") +\n  theme_classic() +\n  theme(\n    panel.border = element_rect(colour = \"black\", fill = NA, size = 0.5),\n    axis.text.x = element_text(angle = 45, hjust = 1)\n  )\n\nWarning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.\nℹ Please use the `linewidth` argument instead.\n\nggplotly(p)"
   },
   {
-    "objectID": "FCE_dashv1.html#row-3",
-    "href": "FCE_dashv1.html#row-3",
+    "objectID": "FCE_dash.html#row-3",
+    "href": "FCE_dash.html#row-3",
     "title": "Florida Coastal Everglades R Workshop",
     "section": "",
     "text": "library(plotly)\n\nhydro_monthly &lt;- read_rds(\"hydro_month.rds\")\n\nquad_model &lt;- lm(wse_mean ~ poly(TimeIndex, 2, raw = TRUE), data = hydro_monthly)\n\nr2_value &lt;- summary(quad_model)$r.squared\n\ncoefs &lt;- coef(quad_model)\neq &lt;- sprintf(\"y = %.4f x² + %.4f x + %.4f\", coefs[3], coefs[2], coefs[1])\n\ny_min &lt;- min(hydro_monthly$wse_mean, na.rm = TRUE) - 5  \nstart_date &lt;- as.Date(\"2005-01-01\")\nend_date &lt;- as.Date(\"2024-04-30\")\n\nhydro_select &lt;- hydro_monthly %&gt;%\n  dplyr::select(YearMonth, wse_mean)\n\ndygraphs::dygraph(hydro_select) %&gt;%\n  dySeries(\"wse_mean\",\n           label = \"water surface elevation\",\n           stepPlot = TRUE,\n           color = \"blue\") %&gt;%\n  dyAxis(\"y\",\n         label = \"wse (cm)\",\n         axisLabelColor = \"black\") %&gt;%\n  dyLegend(show = \"always\",\n           hideOnMouseOut = FALSE,\n           width = 400) %&gt;%\n  dyRangeSelector(height = 10)"
   },
   {
-    "objectID": "FCE_dashv1.html#row-4",
-    "href": "FCE_dashv1.html#row-4",
+    "objectID": "FCE_dash.html#row-4",
+    "href": "FCE_dash.html#row-4",
     "title": "Florida Coastal Everglades R Workshop",
     "section": "Row",
-    "text": "Row\n\nDataset Last updated: Tue May 06 4:35:02 PM 2025\n\nlibrary(DT)\n\nsites &lt;- read_rds(\"sites.rds\")\ndatatable(sites)"
+    "text": "Row\n\nDataset Last updated: Tue May 06 4:59:28 PM 2025\n\nlibrary(DT)\n\nsites &lt;- read_rds(\"sites.rds\")\ndatatable(sites)"
   }
 ]

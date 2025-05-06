@@ -9,7 +9,7 @@ website:
       - href: index.qmd
         text: Home
       - about.qmd
-      - href: FCE_dashv1.html
+      - href: FCE_dash.html
         text: Dashboard
 
 format:
